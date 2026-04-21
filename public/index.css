@@ -6,7 +6,8 @@ body {
 
     margin: 20px 0;
     padding: 0;
-    background: rgb(243, 243, 168);
+    /* background: rgb(243, 243, 168); */
+    background: rgb(44, 116, 131);
     text-align: center;
     color: black;
     box-sizing: border-box;
