@@ -83,10 +83,9 @@ if (window.location.href.indexOf('index.html') !== -1 || window.location.href.en
         );
     }
 }
-// Test Comment for Firebase Hosting
 
 // Google Authentication
-if (window.location.href.indexOf('index.html') !== -1 || window.location.href.indexOf('signup.html') !== -1) {
+if (window.location.href.indexOf('index.html') !== -1 || window.location.href.indexOf('signup.html') !== -1 || window.location.href.endsWith("/")) {
     signInBtnEl.onclick = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
