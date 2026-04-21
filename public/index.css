@@ -1,0 +1,105 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px 0;
+    padding: 0;
+    background: rgb(243, 243, 168);
+    text-align: center;
+    color: black;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+input[type="text"] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+input[type="password"] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+input[type="email"] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+input[type="password"] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
+input[type="submit"], button {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 75px;
+    margin: 40px auto 10px auto;
+}
+
+button {
+    margin: 10px auto 10px auto;
+}
+
+#login-button, #signup-button {
+    margin: 40px auto 10px auto;
+}
+
+input[type="submit"]:hover, button:hover {
+    background: rgb(52, 52, 52);
+    cursor: pointer;
+}
+
+p {
+    font-size: 16px;
+}
+
+a {
+    /* color: black; */
+    text-decoration: none;
+}
+
+.horizontal-line {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid black;
+    line-height: 0.1em;
+    margin: 20px 0 20px 0;
+}
+
+.horizontal-line span {
+    background: rgb(243, 243, 168);
+    padding: 0 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#login-form, #signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+#forgot-password-link {
+    margin: 10px 0 10px auto;
+}
