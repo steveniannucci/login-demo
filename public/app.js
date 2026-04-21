@@ -83,7 +83,8 @@ if (window.location.href.indexOf('index.html') !== -1 || window.location.href.en
         );
     }
 }
-//https://login-demo-31633.firebaseapp.com/pages/login-success.html
+// Test Comment
+
 // Google Authentication
 if (window.location.href.indexOf('index.html') !== -1 || window.location.href.indexOf('signup.html') !== -1) {
     signInBtnEl.onclick = () => {
