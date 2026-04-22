@@ -15,7 +15,7 @@ body {
 label {
     display: block;
     font-size: 20px;
-    margin: 10px 0;
+    margin: 10px 0 0 0;
 }
 
 input[type="text"] {
@@ -23,6 +23,7 @@ input[type="text"] {
     padding: 10px;
     width: 300px;
     box-sizing: border-box;
+    margin: 10px 0 0 0;
 }
 
 input[type="password"] {
@@ -37,6 +38,7 @@ input[type="email"] {
     padding: 10px;
     width: 300px;
     box-sizing: border-box;
+    margin: 10px 0 0 0;
 }
 
 input[type="password"] {
@@ -55,6 +57,7 @@ input[type="submit"], button {
 }
 
 button {
+    border-radius: 5px;
     margin: 10px auto 10px auto;
 }
 
@@ -102,4 +105,26 @@ a:hover {
 
 #forgot-password-link {
     margin: 10px 0 10px auto;
+}
+
+#show-password-button {
+    padding: 11px 10px;
+}
+
+.error-message {
+    color: red;
+}
+
+#username-error, #email-error {
+    margin: 10px 0 0 0;
+}
+
+#password-error {
+    text-align: left;
+    white-space: pre-line;
+}
+
+#login-error {
+    display: block;
+    margin: 0 auto;
 }

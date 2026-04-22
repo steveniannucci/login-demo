@@ -42,45 +42,105 @@ const welcomeMessageEl = document.querySelector("#welcome-message");
 const emailInfoEl = document.querySelector("#email-info");
 
 // Email and Password Authentication
-if (window.location.href.includes('signup.html')) {
+if (window.location.href.indexOf('signup.html') !== -1) {
     signupButtonEl.onclick = () => {
         const username = document.querySelector("#username").value;
         const email = document.querySelector("#email").value;
         const password = document.querySelector("#password").value;
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                return setDoc(doc(db, "users", user.uid), {
-                    username: username,
-                    email: email,
-                    password: password
+        const usernameErrorEl = document.querySelector("#username-error");
+        const emailErrorEl = document.querySelector("#email-error");
+        const passwordErrorEl = document.querySelector("#password-error");
+
+        let errorsHandled = true;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9#@$?!]{6,}$/;
+
+        if (document.querySelector("#username").value === "") {
+            errorsHandled = false;
+            usernameErrorEl.textContent = "*Username can't be blank."
+        } else {
+            usernameErrorEl.textContent = ""
+        }
+        if (document.querySelector("#email").value === "") {
+            errorsHandled = false;
+            emailErrorEl.textContent = "*Email can't be blank.";
+        } else if (document.querySelector("#email").value !== "" && document.querySelector("#email").value.indexOf('@') === -1) {
+            errorsHandled = false;
+            emailErrorEl.textContent = "*Email must include \"@\" in the address."
+        } else {
+            emailErrorEl.textContent = "";
+        }
+        if (document.querySelector("#password").value.length < 6) {
+            errorsHandled = false;
+            passwordErrorEl.textContent = "*Password must be at least 6 characters in length.";
+        } else if (!regex.test(document.querySelector("#password").value)) {
+            passwordErrorEl.textContent = `*Password must have the following:\nan uppercase letter, lowercase letter, number and special character.`
+        } else {
+            passwordErrorEl.textContent = "";
+        }
+        
+        if (errorsHandled === true) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return setDoc(doc(db, "users", user.uid), {
+                        username: username,
+                        email: email,
+                        password: password
+                    });
+                })
+                .then(function() {
+                    window.location.href = "/pages/login-success.html";
+                })
+                .catch(function(error) {
+                    console.error(error);
                 });
-            })
-            .then(function() {
-                document.querySelector("#signup-form").reset();
-                window.location.href = "/pages/login-success.html";
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
+        } else {
+            console.log("User failed to sign up");
+        }
     }
 }
 
-if (window.location.href.indexOf('index.html') !== -1 || window.location.href.endsWith("/")) {
+if (window.location.href.indexOf('index.html') !== -1 || window.location.href.endsWith('/')) {
     loginButtonEl.onclick = () => {
         const email = document.querySelector("#email").value;
         const password = document.querySelector("#password").value;
 
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                if (user) {
-                    window.location.href = "/pages/login-success.html";
-                }
-            })
-            .catch((error) => console.log(error)
-        );
+        const emailErrorEl = document.querySelector("#email-error");
+        const passwordErrorEl = document.querySelector("#password-error");
+        const loginErrorEl = document.querySelector("#login-error");
+
+        let errorsHandled = true;
+
+        if (document.querySelector("#email").value === "") {
+            errorsHandled = false;
+            emailErrorEl.textContent = "*Email can't be blank.";
+        } else if (document.querySelector("#email").value !== "" && document.querySelector("#email").value.indexOf('@') === -1) {
+            errorsHandled = false;
+            emailErrorEl.textContent = "*Email must include \"@\" in the address."
+        } else {
+            emailErrorEl.textContent = "";
+        }
+        if (document.querySelector("#password").value === "") {
+            errorsHandled = false;
+            passwordErrorEl.textContent = "*Password can't be blank.";
+        } else {
+            passwordErrorEl.textContent = "";
+        }
+
+        if (errorsHandled === true) {
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    if (user) {
+                        window.location.href = "/pages/login-success.html";
+                    }
+                })
+                .catch((error) => loginErrorEl.textContent = "Invalid username or password."
+            );
+        } else {
+            console.log("User failed to log in");
+        }
     }
 }
 
@@ -136,6 +196,24 @@ onAuthStateChanged(auth, (user) => {
         console.log("User not logged in");
     }
 });
+
+const showPasswordButtonEl = document.querySelector("#show-password-button");
+let passwordIsShown = false;
+showPasswordButtonEl.textContent = "Show";
+
+showPasswordButtonEl.addEventListener("click", toggleShowPassword);
+
+function toggleShowPassword() {
+    if (passwordIsShown === false) {
+        passwordIsShown = true;
+        showPasswordButtonEl.textContent = "Hide";
+        document.querySelector("#password").type = "text";
+    } else {
+        passwordIsShown = false;
+        showPasswordButtonEl.textContent = "Show";
+        document.querySelector("#password").type = "password";
+    }
+}
 
 //user.displayName = username
 //user.email = email
