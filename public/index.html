@@ -13,7 +13,7 @@
             <form id="login-form">
                 <div id="login-error" class="error-message"></div>
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Email">
+                <input type="email" id="email" name="email" placeholder="Email" autocomplete="email">
                 <div id="email-error" class="error-message"></div>
                 <label for="password">Password</label>
                 <div class="show-password">
@@ -21,13 +21,11 @@
                     <button type="button" id="show-password-button"></button>
                 </div>
                 <div id="password-error" class="error-message"></div>
-                <p id="forgot-password-link"><a href="#">Forgot your password?</a></p>
+                <!-- <p id="forgot-password-link"><a href="#">Forgot your password?</a></p> -->
                 <button type="button" id="login-button">Log in</button>
             </form>
             <p class="horizontal-line"><span>or</span></p>
-            <section id="whenSignedOut">
-                <button id="signInBtn">Sign in with Google</button>
-            </section>
+            <button id="sign-in-with-Google-button">Sign in with Google</button>
             <p>Need an account? <a href="pages/signup.html">Sign up</a></p>
         </main>
     </body>

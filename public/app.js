@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 // import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
 // import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
@@ -31,15 +31,43 @@ auth.useDeviceLanguage();
 // console.log(app);
 
 // Grab HTML Elements
-const signInBtnEl = document.querySelector("#signInBtn");
-const signOutBtnEl = document.querySelector("#signOutBtn");
+const signInWithGoogleButtonEl = document.querySelector("#sign-in-with-Google-button");
+const signOutButtonEl = document.querySelector("#sign-out-button");
 
 const loginButtonEl = document.querySelector("#login-button");
 const signupButtonEl = document.querySelector("#signup-button");
+const sendPasswordResetEmailButtonEl = document.querySelector("#send-password-reset-email-button");
 
 // const userDetailsEl = document.querySelector("#userDetails");
 const welcomeMessageEl = document.querySelector("#welcome-message");
 const emailInfoEl = document.querySelector("#email-info");
+
+// if (window.location.href.indexOf('password-reset.html') !== -1) {
+//     sendPasswordResetEmailButtonEl.onclick = () => {
+//         const email = document.querySelector("#email").value;
+//         const emailErrorEl = document.querySelector("#email-error");
+
+//         let errorsHandled = true;
+
+//         if (document.querySelector("#email").value === "") {
+//             errorsHandled = false;
+//             emailErrorEl.textContent = "*Email can't be blank.";
+//         } else if (document.querySelector("#email").value !== "" && document.querySelector("#email").value.indexOf('@') === -1) {
+//             errorsHandled = false;
+//             emailErrorEl.textContent = "*Email must include \"@\" in the address."
+//         } else {
+//             emailErrorEl.textContent = "";
+//         }
+
+//         if (errorsHandled === true) {
+//             sendPasswordResetEmail(auth, email)
+//                 .then(auth, email, actionCodeSettings)
+//                 .catch((error) => console.log(error));
+//         } else {
+//             console.log("Invalid email");
+//         } 
+//     }
+// }
 
 // Email and Password Authentication
 if (window.location.href.indexOf('signup.html') !== -1) {
@@ -83,6 +111,10 @@ if (window.location.href.indexOf('signup.html') !== -1) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
+                    sendEmailVerification(user)
+                        .then(() => {
+                            // Email was sent
+                        });
                     return setDoc(doc(db, "users", user.uid), {
                         username: username,
                         email: email,
@@ -146,7 +178,7 @@ if (window.location.href.indexOf('index.html') !== -1 || window.location.href.en
 
 // Google Authentication
 if (window.location.href.indexOf('index.html') !== -1 || window.location.href.indexOf('signup.html') !== -1 || window.location.href.endsWith("/")) {
-    signInBtnEl.onclick = () => {
+    signInWithGoogleButtonEl.onclick = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const user = result.user
@@ -165,7 +197,7 @@ if (window.location.href.indexOf('index.html') !== -1 || window.location.href.in
 
 // signOutBtnEl.onclick = () => auth.signOut();
 if (window.location.href.indexOf('login-success.html') !== -1) {
-    signOutBtnEl.onclick = () => {
+    signOutButtonEl.onclick = () => {
         signOut(auth).then(() => {
             window.location.href = "../index.html";
         }).catch((error) => {
@@ -197,21 +229,23 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-const showPasswordButtonEl = document.querySelector("#show-password-button");
-let passwordIsShown = false;
-showPasswordButtonEl.textContent = "Show";
+if (window.location.href.indexOf('index.html') !== -1 || window.location.href.indexOf('signup.html') !== -1 || window.location.href.endsWith("/")) {
+    const showPasswordButtonEl = document.querySelector("#show-password-button");
+    let passwordIsShown = false;
+    showPasswordButtonEl.textContent = "Show";
 
-showPasswordButtonEl.addEventListener("click", toggleShowPassword);
+    showPasswordButtonEl.addEventListener("click", toggleShowPassword);
 
-function toggleShowPassword() {
-    if (passwordIsShown === false) {
-        passwordIsShown = true;
-        showPasswordButtonEl.textContent = "Hide";
-        document.querySelector("#password").type = "text";
-    } else {
-        passwordIsShown = false;
-        showPasswordButtonEl.textContent = "Show";
-        document.querySelector("#password").type = "password";
+    function toggleShowPassword() {
+        if (passwordIsShown === false) {
+            passwordIsShown = true;
+            showPasswordButtonEl.textContent = "Hide";
+            document.querySelector("#password").type = "text";
+        } else {
+            passwordIsShown = false;
+            showPasswordButtonEl.textContent = "Show";
+            document.querySelector("#password").type = "password";
+        }
     }
 }
 
